@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/pkg-info.mk
+
+%:
+	dh $@ --with maven-repo-helper --with javahelper
+
+override_dh_auto_build:
+	dh_auto_build -- jar sampjar javadocs
+
+override_dh_compress:
+	dh_compress -X.java
+
+override_dh_auto_clean:
+
+get-orig-pom:
+	wget -O debian/pom.xml https://repo1.maven.org/maven2/xerces/xercesImpl/$(DEB_VERSION_UPSTREAM)/xercesImpl-$(DEB_VERSION_UPSTREAM).pom

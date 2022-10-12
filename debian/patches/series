@@ -1,0 +1,5 @@
+01_xjavac_taskdef.patch
+02_build_dont_unzip.patch
+03_bootclasspath.patch
+04_manifest_classpath.patch
+java10.patch

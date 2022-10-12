@@ -1,0 +1,186 @@
+From: Markus Koschany <apo@debian.org>
+Date: Sat, 12 May 2018 21:52:36 +0200
+Subject: java10
+
+Fix FTBFS with Java 9 and Java 10 because the bootclasspath option was removed
+upstream and -Xbootclasspath/a is the only valid option at the moment.
+
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=893346
+Forwarded: no
+---
+ build.xml | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
+
+--- a/build.xml
++++ b/build.xml
+@@ -298,7 +298,6 @@
+            optimize="${optimize}"
+            includeAntRuntime="false"
+            includeJavaRuntime="true"
+-           bootclasspath="/usr/share/java/jaxp-1.4.jar:/usr/share/java/xml-apis-ext.jar:/usr/share/java/xml-resolver.jar"
+            excludes="org/xml/sax/** 
+                 javax/xml/**
+                 org/w3c/dom/*
+@@ -754,35 +753,35 @@
+     <java fork="yes"
+           classname="sax.Counter"
+           failOnError="yes">
+-       <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++       <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+        <arg value="${data.dir}/personal.xml"/>
+     </java>
+     <echo message="Running sax.Writer ..." />
+     <java fork="yes"
+           classname="sax.Writer"
+           failOnError="yes">
+-       <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++       <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+        <arg value="${data.dir}/personal.xml"/>
+     </java>
+     <echo message="Running dom.Counter ..." />
+     <java fork="yes"
+           classname="dom.Counter"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+         <arg value="${data.dir}/personal.xml"/>
+     </java>
+     <echo message="Running dom.Writer ..." />
+     <java fork="yes"
+           classname="dom.Writer"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+         <arg value="${data.dir}/personal.xml"/>
+     </java>
+     <echo message="Running thread.Test dom" />
+     <java fork="yes"
+           classname="thread.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+         <arg value="-dom"/>
+         <arg value="-threads"/>
+         <arg value="20"/>
+@@ -794,7 +793,7 @@
+     <java fork="yes"
+           classname="thread.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>    	
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>    	
+         <arg value="-threads"/>
+         <arg value="20"/>
+         <arg value="-time"/>
+@@ -835,19 +834,19 @@
+     <java fork="yes"
+           classname="dom.DTest"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>    	
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>    	
+     </java>
+     <echo message="Running dom.mem.Test ..." />
+     <java fork="yes"
+           classname="dom.mem.Test"
+           failOnError="yes">
+-       <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++       <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running dom.range.Test ..." />
+     <java fork="yes"
+           classname="dom.range.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+         <arg value="all"/>
+     </java>
+ 
+@@ -855,13 +854,13 @@
+     <java fork="yes"
+           classname="dom.ids.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running dom.serialization.Test ..." />
+     <java fork="yes"
+           classname="dom.serialization.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+         <arg value="${data.dir}/personal-schema.xml"/>
+         <arg value="out.xml"/>
+     </java>
+@@ -869,37 +868,37 @@
+     <java fork="yes"
+           classname="dom.traversal.AllTests"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
+     </java>
+     <echo message="Running schema.Test ..." />
+     <java fork="yes"
+           classname="schema.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running schema.config.AllTests ..." />
+     <java fork="yes"
+           classname="schema.config.AllTests"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
+     </java>
+     <echo message="Running schema.annotations.AllTests ..." />
+     <java fork="yes"
+           classname="schema.annotations.AllTests"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
+     </java>
+     <echo message="Running jaxp.PropertyTest ..." />
+     <java fork="yes"
+           classname="jaxp.PropertyTest"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running jaxp.JAXPSpecTest ..." />
+     <java fork="yes"
+           classname="jaxp.JAXPSpecTest"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+         <arg value="testSchemaLanguageSAX"/>
+         <arg value="testSchemaSourceSAX"/>
+         <arg value="testSchemaLanguageDOM"/>
+@@ -909,25 +908,25 @@
+     <java fork="yes"
+           classname="xinclude.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running dom.registry.Test ..." />
+     <java fork="yes"
+           classname="dom.registry.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running dom.dom3.Test ..." />
+     <java fork="yes"
+           classname="dom.dom3.Test"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${build.dir}/classes"/>
+     </java>
+     <echo message="Running idc.AllTests ..." />
+     <java fork="yes"
+           classname="idc.AllTests"
+           failOnError="yes">
+-        <jvmarg value="-Xbootclasspath/p:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
++        <jvmarg value="-Xbootclasspath/a:${tools.dir}/${jar.apis}${path.separator}${tools.dir}/${jar.resolver}${path.separator}${tools.dir}/${jar.serializer}${path.separator}${tools.dir}/${jar.junit}${path.separator}${build.dir}/classes${path.separator}${build.dir}/tests"/>
+     </java>    
+   </target>
+ 
